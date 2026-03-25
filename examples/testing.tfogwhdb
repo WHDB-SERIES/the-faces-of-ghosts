@@ -1,0 +1,10 @@
+# hows it going
+# so this is the filter list
+# ilucere 3/24/2026
+# lol the file extension
+
+macro CLASSIC_HEAD 5591363797
+macro CLASSIC_FACE 144080495
+
+# man face to classic face
+dyn 131920301555800 face CLASSIC_FACE head CLASSIC_HEAD
