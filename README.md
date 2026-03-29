@@ -40,4 +40,4 @@ ___
 - Sharing of HTTP-Retrieved Filter Lists w/ Other Servers (`cfg.loveThyNeighbor`; federated mode)
 ___
 
-If used in your game(s), consider crediting "WHDB." Credit can be in the form of a small footer, in the credits of your game, or anywhere else- it does not necessarily need clear visbility. This is to spread influence. In actuality, this is not a requirement, just asking for a favor from human to human.
+If used in your game(s), consider crediting "WHDB." Credit can be in the form of a small footer, in the credits of your game, or anywhere else- it does not necessarily need clear visbility. This is to spread influence.
