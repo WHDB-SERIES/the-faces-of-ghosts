@@ -43,9 +43,12 @@ ___
 sorted by trust level
 
 
-| Name | Creator | Link | Trust Level | Notes |
-| dogutsune's list | ilucere | ... | 10 | compiled and reformatted by ilucere |
-| mightydantheman's list | ilucere | ... | 10 | compiled and reformatted by ilucere |
+| Name                                | Compiler        | Compiler Contact                                                                                                | Maintainer | Maintainer Contact                                                                                                 | URL                                                                                                    | Trust Rating | Content Rating | Notes                  |
+|-------------------------------------|-----------------|-----------------------------------------------------------------------------------------------------------------|------------|--------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------|--------------|----------------|------------------------|
+| Dogutsune's Classic Face List       | Dogutsune       | [roblox](https://www.roblox.com/users/1371995/profile)                                                          | Ilucere    | [discord](https://discord.com/users/1218714171466715166) [roblox](https://www.roblox.com/users/3157729316/profile) | [here](https://github.com/Project-WHDB/the-faces-of-ghosts/blob/main/filters/dogutsune.tfogwhdb)       | 10           | 10             | Reformatted by Ilucere |
+| MightyDantheman's Classic Face List | MightyDantheman | [discord](https://discord.com/users/362300579625566209) [roblox](https://www.roblox.com/users/16554100/profile) | Ilucere    | [discord](https://discord.com/users/1218714171466715166) [roblox](https://www.roblox.com/users/3157729316/profile) | [here](https://github.com/Project-WHDB/the-faces-of-ghosts/blob/main/filters/mightydantheman.tfogwhdb) | 10           | 10             | Reformatted by Ilucere |
+|                                     |                 |                                                                                                                 |            |                                                                                                                    |                                                                                                        |              |                |                        |
+|                                     |                 |                                                                                                                 |            |                                                                                                                    |                                                                                                        |              |                |                        |
 
 
 ___
