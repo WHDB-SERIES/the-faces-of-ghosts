@@ -16,14 +16,14 @@ scr.Name = 'faces'
 
 **you can simply string.split the whole file by ':' and do something like this**
 ```lua
-local pairs = {}
+local map = {}
 local list = string.split(list, ':') -- {"O.o", "7046277", "Classic Goof", "7046286", etc...}
 for i = 1, #list do
     if (i % 2 == 0) then
-        pairs[list[i-1]] = tonumber(list[i])
+        map[list[i-1]] = tonumber(list[i])
     end
 end
-print(list) -- {["O.o"]=7046277, ["Classic Goof"]=7046286", etc...}
+print(map) -- {["O.o"]=7046277, ["Classic Goof"]=7046286", etc...}
 ```
 
 ___
