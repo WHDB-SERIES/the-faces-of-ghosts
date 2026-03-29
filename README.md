@@ -42,9 +42,12 @@ ___
 ## Filter Lists
 sorted by trust level
 
+
 | Name | Creator | Link | Trust Level | Notes |
 | dogutsune's list | ilucere | ... | 10 | compiled and reformatted by ilucere |
 | mightydantheman's list | ilucere | ... | 10 | compiled and reformatted by ilucere |
+
+
 ___
 
 If used in your game(s), consider crediting "WHDB." Credit can be in the form of a small footer, in the credits of your game, or anywhere else- it does not necessarily need clear visbility. This is to spread influence.
