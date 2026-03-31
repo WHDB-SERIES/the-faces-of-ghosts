@@ -1,4 +1,4 @@
-# super big thanks to Dogutsune: https://github.com/Dawgra/Facial-Unification/
+###: super big thanks to Dogutsune: https://github.com/Dawgra/Facial-Unification/
 
 # at first, this script used Dogutsune's list of dynamic heads -> classic faces
 # https://devforum.roblox.com/t/facial-unification-convert-dynamic-heads-to-their-classic-format/4312162
@@ -11,7 +11,7 @@
 # i.e. there are no classic face id's for user-uploaded faces as opposed to past roblox-uploaded faces. 
 # also eventually, these decals will have to be manually uploaded by the community, because i wouldn't trust roblox with owning the decals.
 
-# but yeah, this is a community effort- cant be taking the credit.
+but yeah, this is a community effort- cant be taking the credit. :###
 
 head 0
 dyn 115499438051492 face 25321744 # Friendly Grin
