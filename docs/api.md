@@ -31,7 +31,7 @@ we hate david baszucki, we hate dynamic heads.
 `true`: UGC items respecting your defined criteria are included
 `false`: there is no UGC support
 
-### `viewLinksInHeadMesh`
+### `viewLinksInHead`
 **this is your primary means of exploiter defense.** if true, then two attributes are created on a players VISIBLE head (either FakeHead or Head): `dependencyChain` and `originalUrl`.
 
 for `originalUrl`, this is simply the URL of which the users currently-equipped head is from. this does not include the chain of URLs.
@@ -60,54 +60,63 @@ cfg.lists = {
 
 if neither, then it's regarded as a completed mapping, and will not send HTTP requests; in return, each element must be structured as the following:
 ```lua
-{ -- mapInfo
-  dynamicHead: number, -- asset ID of DynamicHead
+[dynamicHead: number] = { -- asset ID of DynamicHead
+  -- mapInfo
   head: number or nil, -- mesh ID
   face: number or nil, -- decal / image ID
 }
 ```
 
-`mapInfo` is defined as `{dynamicHead:number, head:number?, face:number?, headLink:string?, faceLink:string?}`
+`mapInfo` is defined as `{head:number?, face:number?}`
 
-a `map` is the collection of `mapInfo`'s, used to map dynamicheads to their classic head and face counterparts.
+a `dynamicHeadMap`, or `map` in short, is the collection of `mapInfo`'s, used to map dynamicheads to their classic head and face counterparts.
 
 URL entries in this `cfg.lists` configuration are sent an `HTTP GET`; the retrieved value is a raw filter list, which is then parsed with the tiny built-in scripting language.
 
 the keywords of the language are as follows:
 
-- `macro <identifier> <number>` defines a macro, replacing identifiers at runtime
-- `link <url>` defines a URL to be recursively compiled
+- `blockugc <id: number>` blacklists a given UGC creator from having their items converted to their classic counterpart (if `mdtmUGCSupport` is `true`)
+- `link <url: string>` defines a URL to be recursively compiled
 - `dyn <number>` the dynamic head asset ID
 - `head <number>` the head mesh ID
 - `face <number>` the face decal / image ID
 
 here's every keyword and its mapping.
-```lua
-local keywords = {
-	['macro'] = 1,
+```
+keywords = {
+	['dynamic'] = {value=1, expects={'number'}},
+	['head'] = {value=2, expects={'number'}},
+	['face'] = {value=3, expects={'number'}},
 	
-	['dyn'] = 2,
-	['dynamic'] = 2,
-	
-	['face'] = 3,
-	['head'] = 4,
-	
-	['put'] = 5,
-	
-	['link'] = 6,
-}
+	['link'] = {value=5, expects={'string'}},
+	['creator'] = {value=6, expects={'number'}},
+	['put'] = {value=7, expects={}},
+
+	['dyn'] = 'dynamic'
+},
+
+
+# and some common syntax 
+
+'this is a one-line string'
+"this is also a one-line string"
+[[this, my friend, is a multi-line string]]
+
+# this is a single comment
+-- this is also a single comment
+
+###: this is a multi comment :###
+--[[ this is also a multi comment ]]--
+
 ```
 
-notice how `dyn` and `dynamic` have the same value? they are synonyms, and can be used interchangably.
+`dyn` and `dynamic` are synonyms, and can be used interchangably.
 
-the use of `macro` and `link`:
+the use of `link`:
 
 ```py
 # testingTFOG.tfogwhdb
-macro FAVORITE_HEAD 290567345 # define the asset id of a particular head
-
-link https://raw.githubusercontent.com/ilucere/fake-repository/refs/heads/main/scripts/fake-filter-list.tfogwhdb
-# no need for quotations. in studio, the code will see `link` and get its corresponding repo.
+link "https://raw.githubusercontent.com/ilucere/fake-repository/refs/heads/main/scripts/fake-filter-list.tfogwhdb"
 # essentially, you can have chained filter lists
 ```
 
@@ -136,50 +145,50 @@ face 2390025
 
 a similar logic applies to the `face` keyword. the `dyn` keyword has different behaviour, in that once it's found in the map of dynamic heads to classic faces/heads, it is that entry which is used, hence between multiple entries with the same `dynamicHead` value, the one retrieved first is used.
 
-every newline, the `put` keyword is signalled, which 'submits' the current line. the current `dynamicHead`, `head`, and `face` is submitted for mapping. manually writing the `put` keyword is not recommended, but is available for one-liners. here's an example of 'submissions' of `put` (in brackets) when adding an entry into the map.
+every newline (with an eligible token such as `head`, `face`, or `dynamic`/`dyn`), the `put` keyword is automatically inserted, which 'submits' the current `dynamicHead`, `head`, and `face` for mapping. manually writing the `put` keyword is not recommended, but is available for one-liners. here's an example of 'submissions' of `put` (in brackets) when adding an entry into the map.
 
 ```py
-dyn 34637321 # put {lastDynamic=34637321, head=nil, face=nil}
+dyn 34637321 # put {lastDynamic=34637321, lastHead=nil, lastFace=nil}
 #--- any dynamic head will be replaced with a head with no mesh Id or face Id (top priority)
 
-head 1354235 face 3489908 # put {lastDynamic=34637321, head=1354235, face=3489908}
+head 1354235 face 3489908 # put {lastDynamic=34637321, lastHead=1354235, lastFace=3489908}
 #--- ignored- prior line takes precedence because it defined `dyn` first
 
 
 
 # is equivalent to... (new script) 
-dyn 34637321 # put {lastDynamic=34637321, head=nil, face=nil}
+dyn 34637321 # put {lastDynamic=34637321, lastHead=nil, lastFace=nil}
 #--- any dynamic head will be replaced with a head with no mesh Id or face Id (top priority)
 
-head 1354235 face 2465246 # put {lastDynamic=34637321, head=1354235, face=2465246}
+head 1354235 face 2465246 # put {lastDynamic=34637321, lastHead=1354235, lastFace=2465246}
 #--- ignored- prior line takes precedence because it defined `dyn` first
 
-face 3489908 # put {lastDynamic=34637321, head=1354235, face=3489908}
+face 3489908 # put {lastDynamic=34637321, lastHead=1354235, lastFace=3489908}
 #--- ignored- first line takes precedence because it defined `dyn` first
 
 
 
 # and (new script) 
-dyn 34637321 # put {lastDynamic=34637321, head=nil, face=nil}
+dyn 34637321 # put {lastDynamic=34637321, lastHead=nil, lastFace=nil}
 #--- any dynamic head will be replaced with a head with no mesh Id or face Id (top priority)
 
-head 1354235 # put {lastDynamic=34637321, head=1354235, face=nil}
+head 1354235 # put {lastDynamic=34637321, lastHead=1354235, lastFace=nil}
 #--- ignored- first line takes precedence because it defined `dyn` first
 
-face 2465246 # put {lastDynamic=34637321, head=1354235, face=2465246}
+face 2465246 # put {lastDynamic=34637321, lastHead=1354235, lastFace=2465246}
 #--- ignored- first line takes precedence because it defined `dyn` first
 
-face 3489908 # put {lastDynamic=34637321, head=1354235, face=3489908}
+face 3489908 # put {lastDynamic=34637321, lastHead=1354235, lastFace=3489908}
 #--- ignored- first line takes precedence because it defined `dyn` first
 ```
 
 here's an example of the manual `put` keyword in a one-liner:
 ```py
 dynamic 34637321 head 1354235 face 2465246 put face 3489908
-# put {lastDynamic=34637321, head=1354235, face=2465246}
-# put {lastDynamic=34637321, head=1354235, face=3489908}
+# put {lastDynamic=34637321, lastHead=1354235, lastFace=2465246}
+# put {lastDynamic=34637321, lastHead=1354235, lastFace=3489908}
 
-# notice how there's two `put`s?
+# notice how there's two `put`s in the comments?
 # the first is from the manual use of the keyword
 # the second is from the newline.
 # both entries are added to the map, but the latter `put` is ignored because the map would find the prior first
@@ -195,6 +204,7 @@ why not JSON? it is overcomplicated for this purpose, and not beginner-friendly.
 
 ### `recursiveLinksEnabled: boolean`
 if true, then filter lists can have links inside of them.
+`recursiveLinksEnabledForFilterList` is a setting specifically for filter lists. both configurations must be true for filterlist chaining to occur
 
 ### `fixNeckRigAttachment: boolean`
 **fixes the neck**. Roblox made it higher and elongated-looking.
@@ -256,9 +266,6 @@ if the server has already compiled data directly from the `cfg.lists` filter lis
 ### `compileOnBoot: boolean`
 **compile on boot?** if `false`, then compilation (including the http requests) happens once a figure needs the list. if `true`, it happens seamlessly on boot.
 
-### `jsonOnly: boolean`
-**don't use the custom file format, and use JSON?**
-
 # Methods
 
 ### `tfog:ApplyCharacter(character: Model)`
@@ -295,10 +302,6 @@ ensure you create a value called `modified_head` inside the Humanoid once your f
 
 function for self-managing what humanoid receives the dynamic head changes
 
-### `configureJson: nil, function(json: string)-->{mapInfo}`
-function for parsing the json yourself if `jsonOnly` is set to true
-
-
 # Other
 
 `retry` is a list of how many times each (async) function should retry if it fails. each element contains `attempts`, which is the number of times it should try before giving up, and `secondsPerAttempt`, a cumulative, **quadratic**, wait-time per attempt
@@ -314,8 +317,6 @@ local function retry(maxAttempts, timePerAtt, fn, ...)
 		result = {pcall(fn, ...)}
 		if (result[1]) then
 			break
-		--[[else
-			warn('RESULT', result)]]
 		end
 
 		if (timePerAtt) then
