@@ -77,25 +77,12 @@ the keywords of the language are as follows:
 
 - `blockugc <id: number>` blacklists a given UGC creator from having their items converted to their classic counterpart (if `mdtmUGCSupport` is `true`)
 - `link <url: string>` defines a URL to be recursively compiled
-- `dyn <number>` the dynamic head asset ID
+- `dyn <number>` the dynamic head asset ID (`dyn` and `dynamic` can be used interchangably.)
 - `head <number>` the head mesh ID
 - `face <number>` the face decal / image ID
 
 here's every keyword and its mapping.
 ```
-keywords = {
-	['dynamic'] = {value=1, expects={'number'}},
-	['head'] = {value=2, expects={'number'}},
-	['face'] = {value=3, expects={'number'}},
-	
-	['link'] = {value=5, expects={'string'}},
-	['creator'] = {value=6, expects={'number'}},
-	['put'] = {value=7, expects={}},
-
-	['dyn'] = 'dynamic'
-},
-
-
 # and some common syntax 
 
 'this is a one-line string'
@@ -110,7 +97,7 @@ keywords = {
 
 ```
 
-`dyn` and `dynamic` are synonyms, and can be used interchangably.
+
 
 the use of `link`:
 
@@ -276,6 +263,9 @@ apply to all eligible figures
 
 ### `tfog:SetDynamicHead(character: Model, id: number)`
 set the players dynamic head to that id. just a standard `Humanoid::ApplyDescriptionAsync` function, no special code in here
+
+### `tfog:Recompile()`
+manually update the filter lists, syncing them with the Github repositories
 
 # Functions
 
